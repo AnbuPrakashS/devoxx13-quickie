@@ -1,0 +1,19 @@
+.fa {
+	margin-right: 0.25em;
+}
+.list-group-empty-placeholder {
+	text-align: center;
+	font-weight: normal;
+}
+
+.panel-title {
+	display:inline;
+}
+
+.panel > form {
+	margin: 1em;
+}
+
+.panel i {
+	margin-left: 0.25em;
+}

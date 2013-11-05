@@ -1,0 +1,20 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<i class="fa fa-list"></i>Attendees
+		</h3>
+		<span class="pull-right"> <a href="#/new"><i class="fa fa-plus"></i></a><a
+			href="#"><i class="fa fa-refresh"></i></a>
+		</span>
+	</div>
+	<ul class="list-group">
+		<li data-ng-repeat="attendee in attendees" class="list-group-item">
+			<span>{{attendee.firstName}}</span> <span class="pull-right">
+				<a href="#/edit/{{attendee.id}}"><i class="fa fa-edit"></i></a>
+		</span>
+		</li>
+		<li data-ng-show="attendees != undefined && attendees.length == 0"
+			class="list-group-item list-group-empty-placeholder"><span>There's
+				no attendee. Click <a href="#/new">here</a> to create a new one.</span> </li>
+	</ul>
+</div>
