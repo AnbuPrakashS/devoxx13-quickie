@@ -8,7 +8,7 @@ import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.ext.Provider;
 
 /**
- * Servlet Filter to include cache directives in the headers of the HTTP Response.
+ * {@link ContainerResponseFilter} to include cache directives in the headers of the HTTP Response.
  */
 @Provider
 @CacheControlBinding 

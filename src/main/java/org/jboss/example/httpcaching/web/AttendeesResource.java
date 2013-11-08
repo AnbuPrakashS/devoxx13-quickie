@@ -22,6 +22,7 @@ import javax.ws.rs.core.UriInfo;
 
 import org.jboss.example.httpcaching.domain.Attendee;
 import org.jboss.example.httpcaching.service.AttendeeService;
+import org.jboss.example.httpcaching.web.caching.CacheControlBinding;
 import org.jboss.example.httpcaching.web.caching.CacheInvalidationBinding;
 import org.jboss.example.httpcaching.web.dto.AttendeeRepresentation;
 
@@ -37,7 +38,6 @@ import com.google.common.collect.Lists;
 @Path("/attendees")
 @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-@CacheInvalidationBinding
 public class AttendeesResource {
 
 	@Inject
@@ -46,13 +46,14 @@ public class AttendeesResource {
 	@Context UriInfo uriInfo;
 
 	@GET
+	@CacheControlBinding
 	public Response getAllAttendees() {
 		final Iterable<AttendeeRepresentation> attendees = 
 				Lists.newArrayList(Iterables.transform(attendeeService.getAllAttendees(), new Function<Attendee, AttendeeRepresentation>() {
 			@Override
 			public AttendeeRepresentation apply(final Attendee attendee) {
 				return AttendeeRepresentation.from(attendee);
-			}
+			} 
 		}));
 		return Response.ok(attendees).build();
 	}
@@ -68,6 +69,7 @@ public class AttendeesResource {
 	
 	@GET
 	@Path("/{id}")
+	@CacheControlBinding
 	public AttendeeRepresentation getAttendee(@PathParam("id") final int id) {
 		Attendee attendee = attendeeService.getAttendee(id);
 		return AttendeeRepresentation.from(attendee);
