@@ -17,60 +17,28 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package org.jboss.example.httpcaching.domain;
+package org.jboss.example.httpcaching.rest.caching;
+
+import java.io.IOException;
+
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerResponseContext;
+import javax.ws.rs.container.ContainerResponseFilter;
+import javax.ws.rs.ext.Provider;
 
 /**
- * A conference attendee
- * 
- * @author Xavier Coulon
- *
+ * {@link ContainerResponseFilter} to include cache directives in the headers of the HTTP Response to prevent browsers
+ * to cache the content, because they should always request the server for the latest version, as resources may have
+ * been added/updated/removed.
  */
-public class Attendee {
-	
-	/** Customer id. */
-	private int id;
-	
-	/** Customer's first name.*/
-	private String firstName;
+@Provider
+@CacheControlBinding
+public class CacheControlNoCacheDirectiveFilter implements ContainerResponseFilter {
 
-	/**
-	 * Constructor
-	 * @param id the customer's id
-	 * @param firstName the curstomer's first name
-	 */
-	public Attendee(final int id, final String firstName) {
-		super();
-		this.id = id;
-		this.firstName = firstName;
+	@Override
+	public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext)
+			throws IOException {
+		responseContext.getHeaders().add("Cache-Control", "no-cache");
 	}
 
-	/**
-	 * Constructor
-	 * @param firstName the curstomer's first name
-	 */
-	public Attendee(final String firstName) {
-		super();
-		this.firstName = firstName;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	
-	
-
-	
-	
 }

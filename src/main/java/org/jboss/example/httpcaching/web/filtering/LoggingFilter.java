@@ -2,6 +2,7 @@ package org.jboss.example.httpcaching.web.filtering;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -12,16 +13,17 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 /**
- * Servlet Filter to include cache directives in the headers of the HTTP Response.
+ * Servlet Filter to log <strong>all</strong> incoming {@link ServletRequest}
+ * method and request URI and {@link ServletResponse} status code.
  */
 @WebFilter(urlPatterns={"/*"})
 public class LoggingFilter implements Filter {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(LoggingFilter.class);
+	@Inject
+	private Logger logger;
 	
 	/**
 	 * @see Filter#destroy()
@@ -34,12 +36,12 @@ public class LoggingFilter implements Filter {
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
+	public void doFilter(final ServletRequest request, final ServletResponse response,
+			final FilterChain chain) throws IOException, ServletException {
 		chain.doFilter(request, response);
 		final HttpServletRequest servletRequest = (HttpServletRequest)request;
 		final HttpServletResponse servletResponse = (HttpServletResponse)response;
-		LOGGER.info("{} {} {}", servletResponse.getStatus(), servletRequest.getMethod(), servletRequest.getRequestURI());
+		logger.info("{} {} -> {}", servletRequest.getMethod(), servletRequest.getRequestURI(), servletResponse.getStatus());
 	}
 
 	/**

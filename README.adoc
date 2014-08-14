@@ -1,0 +1,69 @@
+= devoxx13-quickie
+
+== About
+
+Demo application for the *HTTP Caching in Practice DEVOXX'13 Quickie*.  
+
+This application uses JAX-RS 2.0 +Interceptors+ and +Filters+ bound to some JAX-RS +Resource Methods+, along with +Servlet Filters+ to manage HTTP Caching Headers, such as:
+
+- +ETag+ in the headers of the responses when an 'Attendee' resource is created or updated or just requested.
+- +If-None-Match+ in the headers of the requests when requesting a resource for which an +Etag+ was previously provided (based on the resource URI).
+- +Cache-Control: no-cache+ in all responses to a +GET+ request to prevent caching at the browser level. We actually need to make sure that the browser is going to request the data on the server.
+
+The +RequestIfNoneMatchInterceptor+ class checks if the incoming request includes an +If-None-Match+ header and looks for 
+the last known Etag value in the internal +CacheService+. 
+If the returned value matches with the given header value, then there is no need to invoke the underlying resource method 
+(which could be an expensive operation, depending on the business rules). 
+In this case, the +RequestIfNoneMatchInterceptor+ aborts the request and returns a +304+ response with *no data*, since the browser already has a local copy of the requested resource.
+
+== What you should see
+
+Using your browser developer tools, you should pay attention to the response code when an 'Attendee' resource is requested, added, updated or removed.
+If no data changed since the last request, the response code should be +304+, otherwise, it should be +20x+ (+201+ after an attendee creation, +200+ otherwise).
+Responses should contain an +Etag+ header, and subsequent GET requests to the same URI should include a +If-None-Match+ header with the same Etag value.
+
+All static data requests are filtered by a Servlet +Filter+ whichs adds an +Expires+ header with a duration of 2 years. 
+
+== Requirements
+
+This application deploys on http://wildfly.org/downloads/[WildFly 8.1] and requires *Java 8*. 
+There is no need for a backend database because the 'Attendees' are stored in an in-memory map to keep things simple.
+
+The request-response and return codes are tested with http://arquillian.org[Arquillian]:
+ 
+- to run the tests against a 'managed' instance of WildFly (ie: Arquillian will start and stop it), run
+----
+mvn clean test -Parquillian-wildfly-managed -DJBOSS_HOME=/path/to/wildfly-8.1
+---- 
+
+- to run the tests against a 'remote' instance of WildFly (ie: Arquillian assumes that the server is already running and it will just deploy and undeploy the test.war archive)
+, run
+----
+mvn clean test -Parquillian-wildfly-remote -DJBOSS_HOME=/path/to/wildfly-8.1
+---- 
+
+== Deployment
+
+=== Using JBoss Developer Studio
+
+Import the project using the +Existing Maven Project(s)+ wizard, then drag and drop the project your Wildfly 8.1 server and visit http://localhost:8080/app[]
+
+=== From the command line
+
+Make sure you already have a local instance of WildFly 8.1 started.
+
+----
+mvn clean wildfly:deploy
+----
+
+(by default, the Arquillian tests are skipped - see the +maven-surefire-plugin+ configuration in the +pom.xml).
+
+Go to http://localhost:8080/app
+
+ 
+Have Fun! +
+http://twitter.com/xcoulon[@xcoulon]
+
+ 
+
+

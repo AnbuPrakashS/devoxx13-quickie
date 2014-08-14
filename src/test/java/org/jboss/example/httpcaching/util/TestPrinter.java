@@ -1,4 +1,4 @@
-package org.jboss.example.httpcaching;
+package org.jboss.example.httpcaching.util;
 
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;

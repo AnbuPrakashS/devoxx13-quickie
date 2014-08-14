@@ -9,7 +9,6 @@ http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
 		is the most mature -->
 	<defaultProtocol type="Servlet 3.0" />
 
-
 	<!-- see https://docs.jboss.org/author/display/ARQ/JBoss+AS+7.1%2C+JBoss+EAP+6.0+-+Managed -->
 	<container qualifier="arquillian-jboss-managed" default="true">
 		<configuration>
@@ -17,10 +16,13 @@ http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
 			<property name="javaVmArguments">-Xms1024m -Xmx1024m -XX:MaxPermSize=512m 
             		</property>
 			<!-- same config as standalone-full.xml, but without the deployment-scanner 
-				submodule -->
-			<property name="serverConfig">standalone-tests.xml</property>
+				submodule 
+			<property name="serverConfig">standalone-tests.xml</property> -->
 		</configuration>
 	</container>
 
+	<container qualifier="arquillian-jboss-remote">
+
+	</container>
 	
 </arquillian>

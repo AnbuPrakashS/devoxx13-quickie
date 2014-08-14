@@ -17,60 +17,27 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package org.jboss.example.httpcaching.domain;
+package org.jboss.example.httpcaching.util;
+
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.spi.InjectionPoint;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * A conference attendee
- * 
+ * The Slf4J {@link Logger} producer
  * @author Xavier Coulon
  *
  */
-public class Attendee {
+@ApplicationScoped
+public class LoggerProducer {
 	
-	/** Customer id. */
-	private int id;
-	
-	/** Customer's first name.*/
-	private String firstName;
+	@Produces
+    public Logger produceLog(final InjectionPoint injectionPoint) {
+        return LoggerFactory.getLogger(injectionPoint.getMember().getDeclaringClass().getName());
+    }
 
-	/**
-	 * Constructor
-	 * @param id the customer's id
-	 * @param firstName the curstomer's first name
-	 */
-	public Attendee(final int id, final String firstName) {
-		super();
-		this.id = id;
-		this.firstName = firstName;
-	}
-
-	/**
-	 * Constructor
-	 * @param firstName the curstomer's first name
-	 */
-	public Attendee(final String firstName) {
-		super();
-		this.firstName = firstName;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	
-	
-
-	
-	
 }

@@ -17,60 +17,25 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package org.jboss.example.httpcaching.domain;
+package org.jboss.example.httpcaching.rest.caching;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import javax.ws.rs.NameBinding;
 
 /**
- * A conference attendee
- * 
+ * {@link NameBinding} annotation to bind some JAX-RS Resource Methods to the
+ * {@link CacheInvalidationFilter} interceptor.
+ *
  * @author Xavier Coulon
  *
  */
-public class Attendee {
-	
-	/** Customer id. */
-	private int id;
-	
-	/** Customer's first name.*/
-	private String firstName;
+@Target({ ElementType.TYPE, ElementType.METHOD })
+@Retention(value = RetentionPolicy.RUNTIME)
+@NameBinding
+public @interface CacheInvalidationBinding {
 
-	/**
-	 * Constructor
-	 * @param id the customer's id
-	 * @param firstName the curstomer's first name
-	 */
-	public Attendee(final int id, final String firstName) {
-		super();
-		this.id = id;
-		this.firstName = firstName;
-	}
-
-	/**
-	 * Constructor
-	 * @param firstName the curstomer's first name
-	 */
-	public Attendee(final String firstName) {
-		super();
-		this.firstName = firstName;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	
-	
-
-	
-	
 }
